@@ -1,9 +1,13 @@
 COMPILER = g++
-LIBS = -lncurses -pthread
-DEPENDENCIES = tetris_math.h
+LIBS = -lncurses
+DEPENDENCIES = 	tetris.h	 	\
+				tetris_math.h	\
+				figure.h	 	\
+				field.h			\
+				input_reader.h
 OUTPUT_DIR = obj
 
-_OBJ = tetris.o
+_OBJ = main.o tetris.o
 OBJ = $(patsubst %,$(OUTPUT_DIR)/%,$(_OBJ))
 
 $(OUTPUT_DIR)/%.o: %.cpp $(DEPENDENCIES)
