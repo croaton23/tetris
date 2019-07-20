@@ -1,3 +1,4 @@
+#include "tetris_math.h"
 #include <iostream>
 #include <vector>
 #include <thread>
@@ -11,12 +12,6 @@ using namespace std;
 //  | 1
 //  | 2
 // \/ 3
-
-struct Point
-{
-	int X;
-	int Y;
-};
 
 class Field
 {
