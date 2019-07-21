@@ -6,11 +6,14 @@ DEPENDENCIES = 	tetris.h	 	\
 				field.h
 OUTPUT_DIR = obj
 
-_OBJ = main.o tetris.o
+_OBJ = tetris.o main.o 
 OBJ = $(patsubst %,$(OUTPUT_DIR)/%,$(_OBJ))
 
 $(OUTPUT_DIR)/%.o: %.cpp $(DEPENDENCIES)
-	$(COMPILER) -c -o $@ $<
+	$(COMPILER) -g -c -o $@ $<
 
 tetris: $(OBJ)
-	$(COMPILER) -o $@ $^ $(LIBS)
+	$(COMPILER) -g -o $@ $^ $(LIBS)
+
+clean:
+	rm -f $(OUTPUT_DIR)/*.o ./tetris 

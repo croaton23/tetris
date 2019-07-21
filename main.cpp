@@ -2,6 +2,6 @@
 
 int main()
 {
-	Tetris tetris; 
+	Tetris tetris(20,20); 
 	tetris.Play();
 }

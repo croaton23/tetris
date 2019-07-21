@@ -64,18 +64,28 @@ class Figure
 
 	void RotateClockwise()
 	{
-		int maxX = 0;
 		for(auto& point : m_localCoordinates)
 		{
-			int tmpX = point.X;
-			point.X = point.Y;
-			point.Y = -tmpX;
-			if (tmpX > maxX)
-				maxX = tmpX;
+			Point rotatedPoint = TetrisMath::Rotate90DegsClockwiseAndOffsetUp(point, m_width);
+			if (m_leftTop.X + rotatedPoint.X >= m_field->GetWidth() 
+				|| m_leftTop.Y + rotatedPoint.Y >= m_field->GetHeight()
+				|| m_field->field[m_leftTop.Y + rotatedPoint.Y][m_leftTop.X + rotatedPoint.X] != '.')
+			{
+				return;
+			}
 		}
 
 		for(auto& point : m_localCoordinates)
-			point.Y += maxX;
+		{
+			TetrisMath::Rotate90DegsClockwiseAndOffsetUp(&point, m_width);
+		}
+
+		std::swap(m_height, m_width);
+	}
+
+	void MoveToFloor()
+	{
+		while(Move());
 	}
 
 	void Draw() const
@@ -101,6 +111,8 @@ protected:
 	Point m_leftTop;
 	vector<Point> m_localCoordinates;
 	Field* m_field;
+	int m_width;
+	int m_height;
 };
 
 
@@ -110,6 +122,8 @@ class Square : public Figure
 	Square(Field* field) : Figure(field) 
 	{
 		m_localCoordinates.insert( m_localCoordinates.end(), { {0,0}, {0,1}, {1,0}, {1,1} } );
+		m_width = 2;
+		m_height = 2;
 	}
 };
 
@@ -119,6 +133,8 @@ class HFigure : public Figure
 	HFigure(Field* field) : Figure(field) 
 	{
 		m_localCoordinates.insert( m_localCoordinates.end(), { {0,0}, {0,1}, {1,1}, {1,2} } );
+		m_width = 2;
+		m_height = 3;
 	}
 };
 
@@ -128,6 +144,8 @@ class ZFigure : public Figure
 	ZFigure(Field* field) : Figure(field) 
 	{
 		m_localCoordinates.insert( m_localCoordinates.end(), { {0,0}, {1,0}, {1,1}, {2,1} } );
+		m_width = 3;
+		m_height = 2;
 	}
 };
 
@@ -137,5 +155,7 @@ class Line : public Figure
 	Line(Field* field) : Figure(field) 
 	{
 		m_localCoordinates.insert( m_localCoordinates.end(), { {0,0}, {1,0}, {2,0}, {3,0} } );
+		m_width = 4;
+		m_height = 1;
 	}
 };

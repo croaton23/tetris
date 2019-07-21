@@ -6,10 +6,10 @@
 
 using namespace std;
 
-//    x -->
+//    x ==>
 //  y 0123
-//  | 1
-//  | 2
+// || 1
+// || 2
 // \/ 3
 
 class Field
