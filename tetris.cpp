@@ -16,8 +16,11 @@ void Tetris::Play()
 	keypad(stdscr, TRUE);
 	nodelay(stdscr, TRUE);
 	scrollok(stdscr, TRUE);
-
-	int input = 0;
+	curs_set(0);
+	int gameLoopSleepMs = 16;
+	int speedMs = 300;
+	int timeSinceLastMove = 0;
+	int input = ERR;
 	Figure* activeFigure = nullptr;
 	do
 	{
@@ -40,34 +43,42 @@ void Tetris::Play()
 
 		field.DestroyCompleteLines();
 		field.Draw();
-		
-		input = getch();
-		if (input != ERR)
-		{
-			switch(input)
-			{	case KEY_LEFT:
-					activeFigure->MoveLeft();
-					break;
-				case KEY_RIGHT:
-					activeFigure->MoveRight();
-					break;
-				default:
-					break;
-			}
-		}
-		
-		bool moveSuccess = activeFigure->Move();
 		activeFigure->Draw();
-		if (!moveSuccess)
+		
+		do
+		{	
+			input = getch();
+			if (input != ERR)
+			{
+				switch(input)
+				{	case KEY_LEFT:
+						activeFigure->MoveLeft();
+						break;
+					case KEY_RIGHT:
+						activeFigure->MoveRight();
+						break;
+					default:
+						break;
+				}
+			}
+		} while (input != ERR);
+		
+		if (timeSinceLastMove >= speedMs)
 		{
-			field.Merge(activeFigure->GetGlobalCoordinates());
-			
-			delete activeFigure;
-			activeFigure = nullptr;
+			bool moveSuccess = activeFigure->Move();
+			if (!moveSuccess)
+			{
+				field.Merge(activeFigure->GetGlobalCoordinates());
+				
+				delete activeFigure;
+				activeFigure = nullptr;
+			}
+			timeSinceLastMove = 0;
 		}
 
 		refresh();
-		this_thread::sleep_for(chrono::milliseconds(300));
+		this_thread::sleep_for(chrono::milliseconds(gameLoopSleepMs));
+		timeSinceLastMove += gameLoopSleepMs;
 	} while ( input != 'e');
 
 	endwin();

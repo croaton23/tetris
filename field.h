@@ -52,7 +52,7 @@ public:
 	{
 		for(auto& point : mergePoints)
 		{
-			field[point.Y][point.X] = '#';
+			field[point.Y][point.X] = '█';
 		}
 	}
 
@@ -61,7 +61,7 @@ public:
 		for(int i = 0; i < field.size(); i++)
 		{
 			int j = 0;
-			while(j < GetWidth() && field[i][j] == '#')
+			while(j < GetWidth() && field[i][j] == '█')
 				j++;
 			
 			if (j == GetWidth())

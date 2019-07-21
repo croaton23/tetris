@@ -3,8 +3,7 @@ LIBS = -lncurses
 DEPENDENCIES = 	tetris.h	 	\
 				tetris_math.h	\
 				figure.h	 	\
-				field.h			\
-				input_reader.h
+				field.h
 OUTPUT_DIR = obj
 
 _OBJ = main.o tetris.o

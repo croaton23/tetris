@@ -63,7 +63,8 @@ class Figure
 	{
 		for(auto& point : m_localCoordinates)
 		{
-			mvaddch(m_leftTop.Y + point.Y, m_leftTop.X + point.X, '#');
+			char a = '█';
+			mvaddch(m_leftTop.Y + point.Y, m_leftTop.X + point.X, a);
 		}
 	}
 
