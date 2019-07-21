@@ -1,4 +1,7 @@
+#define _X_OPEN_SOURCE_EXTENDED
+#define NCURSES_WIDECHAR 1
 #include <curses.h>
+#include <locale.h>
 #include <thread>
 
 #include "field.h"
@@ -10,6 +13,8 @@ using namespace std;
 void Tetris::Play()
 {
 	Field field(20, 20);
+	
+	setlocale(LC_ALL, "");
 	initscr();
 	cbreak();
 	noecho();
@@ -17,6 +22,7 @@ void Tetris::Play()
 	nodelay(stdscr, TRUE);
 	scrollok(stdscr, TRUE);
 	curs_set(0);
+
 	int gameLoopSleepMs = 16;
 	int speedMs = 300;
 	int timeSinceLastMove = 0;
@@ -24,9 +30,11 @@ void Tetris::Play()
 	Figure* activeFigure = nullptr;
 	do
 	{
+		field.DestroyCompleteLines();
+
 		if (activeFigure == nullptr)
 		{
-			int a = rand() % 3;
+			int a = rand() % 4;
 			switch(a)
 			{
 				case 0:
@@ -38,13 +46,12 @@ void Tetris::Play()
 				case 2:
 					activeFigure = new Square(&field);
 				break;
+				case 3:
+					activeFigure = new Line(&field);
+				break;
 			}
 		}
 
-		field.DestroyCompleteLines();
-		field.Draw();
-		activeFigure->Draw();
-		
 		do
 		{	
 			input = getch();
@@ -56,6 +63,9 @@ void Tetris::Play()
 						break;
 					case KEY_RIGHT:
 						activeFigure->MoveRight();
+						break;
+					case KEY_UP:
+						activeFigure->RotateClockwise();
 						break;
 					default:
 						break;
@@ -76,6 +86,10 @@ void Tetris::Play()
 			timeSinceLastMove = 0;
 		}
 
+		field.Draw();
+		if(activeFigure)
+			activeFigure->Draw();
+		
 		refresh();
 		this_thread::sleep_for(chrono::milliseconds(gameLoopSleepMs));
 		timeSinceLastMove += gameLoopSleepMs;

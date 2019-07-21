@@ -1,5 +1,6 @@
 #pragma once
 
+#include <wchar.h>
 #include "tetris_math.h"
 
 class Figure
@@ -7,7 +8,9 @@ class Figure
 	public:
 
 	Figure(Field* field): m_field(field), m_leftTop{field->GetWidth()  / 2, 0}
-	{ }
+	{ 
+		m_localCoordinates.clear();
+	}
 
 	bool Move()
 	{
@@ -59,12 +62,27 @@ class Figure
 		m_leftTop.X++;
 	}
 
+	void RotateClockwise()
+	{
+		int maxX = 0;
+		for(auto& point : m_localCoordinates)
+		{
+			int tmpX = point.X;
+			point.X = point.Y;
+			point.Y = -tmpX;
+			if (tmpX > maxX)
+				maxX = tmpX;
+		}
+
+		for(auto& point : m_localCoordinates)
+			point.Y += maxX;
+	}
+
 	void Draw() const
 	{
 		for(auto& point : m_localCoordinates)
 		{
-			char a = '█';
-			mvaddch(m_leftTop.Y + point.Y, m_leftTop.X + point.X, a);
+    		mvaddwstr(m_leftTop.Y + point.Y, m_leftTop.X + point.X, L"█");
 		}
 	}
 
@@ -91,14 +109,7 @@ class Square : public Figure
 	public:
 	Square(Field* field) : Figure(field) 
 	{
-		m_localCoordinates.clear();
-		m_localCoordinates.push_back({0,0});
-		m_localCoordinates.push_back({0,1});
-		m_localCoordinates.push_back({1,0});
-		m_localCoordinates.push_back({1,1});
-
-		m_leftTop.X = field->GetWidth()  / 2;
-		m_leftTop.Y = 0;
+		m_localCoordinates.insert( m_localCoordinates.end(), { {0,0}, {0,1}, {1,0}, {1,1} } );
 	}
 };
 
@@ -107,14 +118,7 @@ class HFigure : public Figure
 	public:
 	HFigure(Field* field) : Figure(field) 
 	{
-		m_localCoordinates.clear();
-		m_localCoordinates.push_back({0,0});
-		m_localCoordinates.push_back({0,1});
-		m_localCoordinates.push_back({1,1});
-		m_localCoordinates.push_back({1,2});
-
-		m_leftTop.X = field->GetWidth()  / 2;
-		m_leftTop.Y = 0;
+		m_localCoordinates.insert( m_localCoordinates.end(), { {0,0}, {0,1}, {1,1}, {1,2} } );
 	}
 };
 
@@ -123,10 +127,15 @@ class ZFigure : public Figure
 	public:
 	ZFigure(Field* field) : Figure(field) 
 	{
-		m_localCoordinates.clear();
-		m_localCoordinates.push_back({0,0});
-		m_localCoordinates.push_back({1,0});
-		m_localCoordinates.push_back({1,1});
-		m_localCoordinates.push_back({2,1});
+		m_localCoordinates.insert( m_localCoordinates.end(), { {0,0}, {1,0}, {1,1}, {2,1} } );
+	}
+};
+
+class Line : public Figure
+{
+	public:
+	Line(Field* field) : Figure(field) 
+	{
+		m_localCoordinates.insert( m_localCoordinates.end(), { {0,0}, {1,0}, {2,0}, {3,0} } );
 	}
 };

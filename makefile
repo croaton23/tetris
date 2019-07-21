@@ -1,5 +1,5 @@
 COMPILER = g++
-LIBS = -lncurses
+LIBS = -lncursesw
 DEPENDENCIES = 	tetris.h	 	\
 				tetris_math.h	\
 				figure.h	 	\

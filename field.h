@@ -15,7 +15,7 @@ using namespace std;
 class Field
 {
 public:
-	vector<vector<char>> field;
+	vector<vector<wchar_t>> field;
 
 	Field(int height, int width)
 	{
@@ -23,7 +23,7 @@ public:
 
 		for(int i = 0; i < height; i++)
 		{
-			field[i] = vector<char>(width, '.');
+			field[i] = vector<wchar_t>(width, '.');
 		}
 	}
 
@@ -43,7 +43,7 @@ public:
 		{
 			for(int j = 0; j < field[0].size(); j++)
 			{
-				mvaddch(i, j, field[i][j]);
+    			mvaddwstr(i, j, &field[i][j]);
 			}
 		}
 	}
@@ -52,7 +52,7 @@ public:
 	{
 		for(auto& point : mergePoints)
 		{
-			field[point.Y][point.X] = '█';
+			field[point.Y][point.X] = L'█';
 		}
 	}
 
@@ -61,7 +61,7 @@ public:
 		for(int i = 0; i < field.size(); i++)
 		{
 			int j = 0;
-			while(j < GetWidth() && field[i][j] == '█')
+			while(j < GetWidth() && field[i][j] == L'█')
 				j++;
 			
 			if (j == GetWidth())
