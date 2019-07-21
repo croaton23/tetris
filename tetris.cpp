@@ -56,22 +56,28 @@ void Tetris::SpawnActiveFigureIfNeeded()
 	{
 		std::random_device r;
 		std::default_random_engine randomEngine(r());
-		std::uniform_int_distribution<int> uniform_dist(0, 4);
+		std::uniform_int_distribution<int> uniform_dist(1, 6);
 		int figureIndex = uniform_dist(randomEngine);
 
 		switch(figureIndex)
 		{
-			case 0:
+			case 1:
 				m_activeFigure = new ZFigure(m_field);
 			break;
-			case 1:
+			case 2:
 				m_activeFigure = new HFigure(m_field);
 			break;
-			case 2:
+			case 3:
 				m_activeFigure = new Square(m_field);
 			break;
-			case 3:
+			case 4:
 				m_activeFigure = new Line(m_field);
+			break;
+			case 5:
+				m_activeFigure = new LFigure(m_field);
+			break;
+			case 6:
+				m_activeFigure = new JFigure(m_field);
 			break;
 		}
 	}

@@ -149,6 +149,28 @@ class ZFigure : public Figure
 	}
 };
 
+class JFigure : public Figure
+{
+	public:
+	JFigure(Field* field) : Figure(field) 
+	{
+		m_localCoordinates.insert( m_localCoordinates.end(), { {1,0}, {1,1}, {1,2}, {0,2} } );
+		m_width = 2;
+		m_height = 3;
+	}
+};
+
+class LFigure : public Figure
+{
+	public:
+	LFigure(Field* field) : Figure(field) 
+	{
+		m_localCoordinates.insert( m_localCoordinates.end(), { {0,0}, {0,1}, {0,2}, {1,2} } );
+		m_width = 2;
+		m_height = 3;
+	}
+};
+
 class Line : public Figure
 {
 	public:
