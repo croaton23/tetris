@@ -21,7 +21,7 @@ class Figure
 			if (globalPoint.Y >= m_field->GetHeight() - 1)
 				return false;
 
-			if (m_field->field[globalPoint.Y + 1][globalPoint.X] != '.')
+			if (!m_field->GetIsEmpty(globalPoint.Y + 1, globalPoint.X))
 				return false;
 		}
 
@@ -39,7 +39,7 @@ class Figure
 			if (globalPoint.X == 0)
 				return;
 
-			if (m_field->field[globalPoint.Y][globalPoint.X - 1] != '.')
+			if (!m_field->GetIsEmpty(globalPoint.Y, globalPoint.X - 1))
 				return;
 		}
 
@@ -55,7 +55,7 @@ class Figure
 			if (globalPoint.X + 1 == m_field->GetWidth())
 				return;
 
-			if (m_field->field[globalPoint.Y][globalPoint.X + 1] != '.')
+			if (!m_field->GetIsEmpty(globalPoint.Y, globalPoint.X + 1))
 				return;
 		}
 
@@ -69,7 +69,7 @@ class Figure
 			Point rotatedPoint = TetrisMath::Rotate90DegsClockwiseAndOffsetUp(point, m_width);
 			if (m_leftTop.X + rotatedPoint.X >= m_field->GetWidth() 
 				|| m_leftTop.Y + rotatedPoint.Y >= m_field->GetHeight()
-				|| m_field->field[m_leftTop.Y + rotatedPoint.Y][m_leftTop.X + rotatedPoint.X] != '.')
+				|| !m_field->GetIsEmpty(m_leftTop.Y + rotatedPoint.Y, m_leftTop.X + rotatedPoint.X))
 			{
 				return;
 			}
